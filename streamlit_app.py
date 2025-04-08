@@ -15,6 +15,7 @@ selected_from_date = st.date_input(label='Start date', value=datetime.date(year=
 selected_to_date = st.date_input(label='End date', value='today', min_value=datetime.date(year=2021, month=1, day=1), help='When should your data end? You can either use the calendar or manually enter the date, i.e. 2024/08/19.')
 
 leagues = db.get_unique_leagues(sport_id=19, date_from=selected_from_date, date_to=selected_to_date)
+print(leagues)
 
 selected_leagues = st.selectbox(label='Leagues', options=leagues.keys(), index=0, format_func=lambda x: leagues.get(x), help='Please select the leagues you need the data for.')
 
