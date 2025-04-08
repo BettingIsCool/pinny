@@ -1,4 +1,4 @@
-TABLE_LEAGUES, TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS, TABLE_BETS, TABLE_USERS = 'leagues', 'fixtures', 'odds', 'results', 'bets', 'users'
+TABLE_LEAGUES, TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS, TABLE_OPENING, TABLE_CLOSING = 'leagues', 'fixtures', 'odds', 'results', 'opening', 'closing'
 
 SPORTS = dict()
 SPORTS.update({'Soccer': 29})
