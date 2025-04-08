@@ -12,4 +12,4 @@ def get_unique_leagues(sport_id: int, date_from: datetime, date_to: datetime):
     :param sports: A string representing the sports categories to filter the leagues.
     :return: A list of unique league names associated with the user and filtered by the specified sports.
     """
-    return conn.query(f"SELECT DISTINCT(league_name), league_id FROM {TABLE_FIXTURES} WHERE sport_id = {sport_id} AND starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}'").to_dict()
+    return conn.query(f"SELECT league_name, league_id FROM {TABLE_FIXTURES} WHERE sport_id = {sport_id} AND starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}'").to_dict()
