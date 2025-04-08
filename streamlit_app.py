@@ -24,7 +24,7 @@ selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread
 period_options = dict()
 for k, v in PERIODS.items():
     if k[0] == SPORTS[selected_sport]:
-        period_options.update({v: k[1]})
+        period_options.update({k[1]: v})
 
 st.write(period_options)
 
