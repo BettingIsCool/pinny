@@ -20,5 +20,5 @@ selected_leagues = st.selectbox(label='Leagues', options=leagues.keys(), index=0
 
 #selected_leagues = st.selectbox("Leagues", options=sorted(leagues))
 
-st.write(leagues)
+#st.write(leagues)
 
