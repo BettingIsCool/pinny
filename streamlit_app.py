@@ -17,24 +17,23 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 # Get leagues
 leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
+
 selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
+selected_leagues_string = [f"'{s}'" for s in selected_leagues]
+selected_leagues_string = f"({','.join(selected_leagues_string)})"
+
+st.write(selected_leagues_string)
 
 selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
 
 period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
-#period_options = dict()
-#for k, v in PERIODS.items():
-#    if k[0] == SPORTS[selected_sport]:
-#        period_options.update({k[1]: v})
-
 selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
+
+
 
 # Get markets
 
 
-st.write(selected_leagues)
-st.write(selected_markets)
-st.write(selected_periods)
 
 #selected_leagues = st.selectbox("Leagues", options=sorted(leagues))
 
