@@ -16,8 +16,8 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 
 leagues = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)['league_name']
 
-sorted_leagues = list(leagues.keys()).sort(reverse=False)
-print(sorted_leagues)
+sorted_leagues = list(leagues.keys())
+print(type(sorted_leagues))
 
 selected_leagues = st.multiselect(label='Leagues', options=sorted_leagues, format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
 
