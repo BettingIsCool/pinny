@@ -17,6 +17,7 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 leagues = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)['league_name']
 
 sorted_leagues = list(leagues.keys())
+st.write(sorted_leagues)
 sorted_leagues.sort()
 st.write(sorted_leagues)
 
