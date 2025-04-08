@@ -26,6 +26,8 @@ for k, v in PERIODS.items():
     if k[0] == SPORTS[selected_sport]:
         period_options.update({v: k[1]})
 
+st.write(period_options)
+
 selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
 
 # Get markets
