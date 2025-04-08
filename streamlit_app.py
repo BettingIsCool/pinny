@@ -23,14 +23,14 @@ selected_leagues = f"({','.join(selected_leagues)})"
 
 # Process markets
 selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
-selected_markets_string = [f"'{s}'" for s in selected_markets]
-selected_markets_string = f"({','.join(selected_markets_string)})"
+selected_markets = [f"'{s}'" for s in selected_markets]
+selected_markets = f"({','.join(selected_markets)})"
 
 # Process periods
 period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
 selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
-selected_periods_string = [f"'{s}'" for s in selected_periods]
-selected_periods_string = f"({','.join(selected_periods_string)})"
+selected_periods = [f"'{s}'" for s in selected_periods]
+selected_periods = f"({','.join(selected_periods)})"
 
 if selected_type == 'Closing':
 
