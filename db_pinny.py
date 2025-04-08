@@ -6,7 +6,7 @@ conn = st.connection('pinnacle', type='sql')
 
 
 @st.cache_data()
-def get_user_unique_leagues(sport_id: int, date_from: datetime, date_to: datetime):
+def get_unique_leagues(sport_id: int, date_from: datetime, date_to: datetime):
     """
     :param username: The username of the user whose unique leagues are to be fetched.
     :param sports: A string representing the sports categories to filter the leagues.
