@@ -20,10 +20,7 @@ leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
 
 selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
-
-swapped_periods = {v: k for k, v in PERIODS.items()}
-st.write(swapped_periods)
-selected_periods = st.multiselect(label='Periods', options=swapped_periods.keys(), format_func=lambda x: swapped_periods.get(x), help='Please select the periods you need the data for.')
+selected_periods = st.multiselect(label='Periods', options=PERIODS.values(), help='Please select the periods you need the data for.')
 
 # Get markets
 
