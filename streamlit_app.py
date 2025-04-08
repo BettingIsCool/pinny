@@ -21,12 +21,11 @@ selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()
 
 selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
 
-period_options = dict()
-for k, v in PERIODS.items():
-    if k[0] == SPORTS[selected_sport]:
-        period_options.update({k[1]: v})
-
-st.write(period_options)
+period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
+#period_options = dict()
+#for k, v in PERIODS.items():
+#    if k[0] == SPORTS[selected_sport]:
+#        period_options.update({k[1]: v})
 
 selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
 
