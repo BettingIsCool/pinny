@@ -1,4 +1,5 @@
 import streamlit as st
+from sqlalchemy import text
 from config import TABLE_LEAGUES, TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS
 
 conn = st.connection('pinnacle', type='sql')
