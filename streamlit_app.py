@@ -3,8 +3,9 @@ import streamlit as st
 st.set_page_config(page_title="PinnacleData by BettingIsCool", page_icon="💾", layout="wide", initial_sidebar_state="expanded")
 st.title('PinnacleData by BettingIsCool')
 
+import datetime
 import db_pinny as db
-from datetime import datetime
+
 
 from config import SPORTS
 
