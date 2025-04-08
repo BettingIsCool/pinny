@@ -16,6 +16,9 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 
 leagues = db.get_unique_leagues(sport_id=19, date_from=selected_from_date, date_to=selected_to_date)
 
+st.write(type(leagues))
+st.write(leagues)
+
 selected_leagues = st.selectbox(label='Leagues', options=leagues.keys(), index=0, format_func=lambda x: leagues.get(x), help='Please select the leagues you need the data for.')
 
 #selected_leagues = st.selectbox("Leagues", options=sorted(leagues))
