@@ -19,12 +19,12 @@ leagues = dict(zip(leagues_df.league_name, leagues_df.league_id))
 
 
 
-sorted_leagues = sorted(list(leagues.keys()))
-st.write(sorted_leagues)
+#sorted_leagues = sorted(list(leagues.keys()))
+#st.write(sorted_leagues)
 #sorted_leagues.sort()
 
-#selected_leagues = st.multiselect(label='Leagues', options=sorted_leagues, format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
-#st.write(selected_leagues)
+selected_leagues = st.multiselect(label='Leagues', options=sorted_leagues, format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
+st.write(selected_leagues)
 
 #selected_leagues = st.selectbox("Leagues", options=sorted(leagues))
 
