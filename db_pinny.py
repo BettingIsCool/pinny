@@ -13,6 +13,6 @@ def get_unique_leagues(sport: str, date_from: datetime, date_to: datetime):
 
 def get_closing_event_ids(date_from: datetime, date_to: datetime, league_ids: list, markets: list, periods: list):
 
-    return conn.query(f"SELECT COUNT(event_id) FROM {TABLE_CLOSING} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} AND market IN {markets} AND period IN {periods}")[0]['COUNT(event_id)']
+    return conn.query(f"SELECT COUNT(event_id) FROM {TABLE_CLOSING} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
 
 
