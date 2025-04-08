@@ -18,7 +18,7 @@ leagues = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_da
 
 sorted_leagues = list(leagues.keys())
 sorted_leagues.sort()
-st.write(type(sorted_leagues))
+st.write(sorted_leagues)
 
 selected_leagues = st.multiselect(label='Leagues', options=sorted_leagues, format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
 
