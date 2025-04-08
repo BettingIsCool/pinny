@@ -18,7 +18,7 @@ leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from
 leagues = dict(zip(leagues_df.league_name, leagues_df.league_id))
 #sorted_leagues.sort()
 
-selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
+selected_leagues = st.multiselect(label='Leagues', options=leagues.keys(), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
 st.write(selected_leagues)
 
 #selected_leagues = st.selectbox("Leagues", options=sorted(leagues))
