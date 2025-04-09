@@ -35,6 +35,7 @@ selected_periods = f"({','.join(selected_periods)})"
 if selected_type == 'Closing':
 
     rowcount = db.get_closing_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
+    print(rowcount)
     st.write(f"Cost: €{rowcount[0]['COUNT(event_id)'] / 2500}")
 
 
