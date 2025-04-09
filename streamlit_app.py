@@ -43,8 +43,6 @@ if selected_type == 'Closing':
     st.write(rowcount)
     st.write(f"Cost: €{total_cost:.2f}")
 
-
-
     st.title("Pinnacle Betting Data Download")
 
     # Step 3: Generate and display Stripe payment link
@@ -53,4 +51,45 @@ if selected_type == 'Closing':
         if payment_url:
             st.write("Click the link below to complete your payment:")
             st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
+
+    # Check URL parameters for success
+    query_params = st.experimental_get_query_params()
+    if "success" in query_params and query_params["success"][0] == "true":
+        # Normally, you'd pass the session_id via URL or session state
+        # For simplicity, assume it's stored in session state (see below)
+        if "checkout_session_id" in st.session_state:
+            session_id = st.session_state["checkout_session_id"]
+            if stripe_api.verify_payment(session_id):
+                st.success("Payment successful! Preparing your data...")
+                # Proceed to Step 5
+            else:
+                st.error("Payment not verified. Please contact support.")
+        else:
+            st.error("Session ID not found.")
+    else:
+        # Continue from Step 3 code
+        if st.button("Proceed to Payment"):
+            payment_url = stripe_api.create_checkout_session(total_cost, data_selection)
+            if payment_url:
+                # Store session ID in session state for verification
+                session = stripe.checkout.Session.create(
+                    payment_method_types=["card"],
+                    line_items=[{
+                        "price_data": {
+                            "currency": "eur",
+                            "product_data": {
+                                "name": f"Betting Data - {data_selection}",
+                            },
+                            "unit_amount": int(total_cost * 100),
+                        },
+                        "quantity": 1,
+                    }],
+                    mode="payment",
+                    success_url="https://pinnacledata.streamlit.app/?success=true",
+                    cancel_url="https://pinnacledata.streamlit.app/?cancel=true",
+                )
+                st.session_state["checkout_session_id"] = session.id
+                st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
+
+
 

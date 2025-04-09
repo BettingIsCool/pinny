@@ -29,3 +29,13 @@ def create_checkout_session(total_cost: float, data_selection: str):
     except StripeError as e:
         st.error(f"Error creating payment link: {str(e)}")
         return None
+
+
+# Function to verify payment
+def verify_payment(session_id):
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+        return session.payment_status == "paid"
+    except StripeError as e:
+        st.error(f"Payment verification failed: {str(e)}")
+        return False
