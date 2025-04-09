@@ -4,6 +4,7 @@ st.set_page_config(page_title="PinnacleData by BettingIsCool", page_icon="💾",
 st.title('PinnacleData by BettingIsCool')
 
 import datetime
+import stripe_api
 import db_pinny as db
 
 
@@ -36,16 +37,18 @@ if selected_type == 'Closing':
 
     rowcount = db.get_closing_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
     st.write(rowcount)
-    st.write(f"Cost: €{rowcount[0]['COUNT(event_id)'] / 2500}")
 
+    st.write(f"Cost: €{total_cost:.2f}")
 
+    total_cost = rowcount[0]['COUNT(event_id)'] / 2500
+    data_selection = 'Your data selection.'
 
+    st.title("Pinnacle Betting Data Download")
 
-# Get markets
-
-
-
-#selected_leagues = st.selectbox("Leagues", options=sorted(leagues))
-
-#st.write(leagues)
+    # Step 3: Generate and display Stripe payment link
+    if st.button("Proceed to Payment"):
+        payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=data_selection)
+        if payment_url:
+            st.write("Click the link below to complete your payment:")
+            st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
 

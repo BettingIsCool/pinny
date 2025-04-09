@@ -1,3 +1,4 @@
 pandas
+stripe
 SQLAlchemy
 mysql-connector-python
