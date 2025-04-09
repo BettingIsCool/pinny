@@ -18,7 +18,7 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
-selected_leagues = [f"'{s}'" for s in selected_leagues]
+selected_leagues = [f"{s}" for s in selected_leagues]
 selected_leagues = f"({','.join(selected_leagues)})"
 
 # Process markets
@@ -29,7 +29,7 @@ selected_markets = f"({','.join(selected_markets)})"
 # Process periods
 period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
 selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
-selected_periods = [f"'{s}'" for s in selected_periods]
+selected_periods = [f"{s}" for s in selected_periods]
 selected_periods = f"({','.join(selected_periods)})"
 
 if selected_type == 'Closing':
