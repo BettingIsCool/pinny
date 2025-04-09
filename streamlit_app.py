@@ -53,7 +53,7 @@ if selected_type == 'Closing':
             st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
 
     # Check URL parameters for success
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params()
     if "success" in query_params and query_params["success"][0] == "true":
         # Normally, you'd pass the session_id via URL or session state
         # For simplicity, assume it's stored in session state (see below)
