@@ -52,7 +52,7 @@ if selected_leagues != '()':
                 stripe_text = f'Betting Data for {leagues_count} leagues, {rowcount} rows.'
 
                 st.write(data_selection)
-                st.write(db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
+                st.write(db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods))
 
                 # Step 3: Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
