@@ -49,7 +49,7 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n\n'
                 data_selection += f'Total cost: €{total_cost:.2f}\n'
 
-                stripe_text = f'Betting Data for {leagues_count} leagues, {rowcount} rows'
+                stripe_text = f'Betting Data for {leagues_count} leagues, {rowcount} rows.'
 
                 st.write(data_selection)
 

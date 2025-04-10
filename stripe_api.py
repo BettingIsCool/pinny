@@ -10,7 +10,7 @@ def create_checkout_session(total_cost: float, data_selection: str):
     try:
         # Create a Checkout Session
         session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
+            payment_method_types=["card", "paypal"],
             line_items=[{
                 "price_data": {
                     "currency": "eur",
