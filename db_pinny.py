@@ -24,3 +24,8 @@ def get_preview(table: str, date_from: datetime, date_to: datetime, league_ids: 
 def get_granular_event_ids(date_from: datetime, date_to: datetime, league_ids: str):
 
     return {event_id for event_id in conn.query(f"SELECT event_id FROM {TABLE_FIXTURES} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids}")['event_id']}
+
+
+def get_granular_rowcount(event_ids: str):
+
+    return conn.query(f"SELECT COUNT(id) FROM {TABLE_ODDS} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
