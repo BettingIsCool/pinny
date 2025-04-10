@@ -47,15 +47,15 @@ if selected_leagues != '()':
 
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
-                data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n\n'
-                data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
+                data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
+                data_selection += f'Total cost: :red[€{total_cost:.2f}]\n'
 
                 st.write(data_selection)
 
                 preview = db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
                 preview_df = pd.DataFrame(data=preview)
 
-                st.write('Here is a sneak preview of your data')
+                st.write('👇 Here is a sneak preview of your data 👇')
                 st.write(preview_df)
 
                 stripe_text = f'Betting Data for {leagues_count} leagues, {rowcount} rows.'
