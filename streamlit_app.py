@@ -96,12 +96,12 @@ if selected_leagues != '()':
             if selected_type == 'Granular':
 
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
-
-
                 event_ids = [f"{s}" for s in event_ids]
                 event_ids = f"({','.join(event_ids)})"
-                st.write(event_ids)
+                rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
 
-                rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
+                st.write(rowcount)
+
+
 
 
