@@ -43,9 +43,8 @@ if selected_leagues != '()':
 
             if selected_type == 'Closing':
 
-                rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
-
                 st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+                rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
 
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
@@ -71,9 +70,8 @@ if selected_leagues != '()':
 
             if selected_type == 'Opening':
 
-                rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
-
                 st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+                rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
 
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
@@ -99,12 +97,12 @@ if selected_leagues != '()':
 
             if selected_type == 'Granular':
 
+                st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
                 event_ids = [f"{s}" for s in event_ids]
                 event_ids = f"({','.join(event_ids)})"
                 rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
-
-                st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
 
                 total_cost = rowcount / 100000
                 data_selection = f'SUMMARY\n\n'
