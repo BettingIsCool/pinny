@@ -55,24 +55,27 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
-                # Print summary
-                st.write(data_selection)
+                # Provide email
+                email = st.text_input("Your email address", max_chars=100, help='A download link will be sent to this email address.')
 
-                # Show sneak preview
-                st.write('Here is a sneak preview of your data 👇')
-                st.write(pd.DataFrame(data=db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)))
+                if email != '':
 
-                # Create text for Stripe checkout
-                stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+                    # Print summary
+                    st.write(data_selection)
 
-                st.write(f'{selected_sport},{selected_from_date},{selected_to_date},{selected_leagues},{selected_markets},{selected_periods}')
+                    # Create text for Stripe checkout
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
-                # Generate and display Stripe payment link
-                if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{selected_sport},{selected_from_date},{selected_to_date},{selected_leagues},{selected_markets},{selected_periods}')
-                    if payment_url:
-                        st.write("Click the link below to complete your payment:")
-                        st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
+                    # Generate and display Stripe payment link
+                    if st.button("Proceed to Payment"):
+                        payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{email};Closing;{selected_sport};{selected_from_date};{selected_to_date};{selected_leagues};{selected_markets};{selected_periods}')
+                        if payment_url:
+                            st.write("Click the link below to complete your payment:")
+                            st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
+
+                    # Show sneak preview
+                    st.write('Here is a sneak preview of your data 👇')
+                    st.write(pd.DataFrame(data=db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)))
 
             if selected_type == 'Opening':
 
@@ -88,22 +91,27 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
-                # Print summary
-                st.write(data_selection)
+                # Provide email
+                email = st.text_input("Your email address", max_chars=100, help='A download link will be sent to this email address.')
 
-                # Show sneak preview
-                st.write('Here is a sneak preview of your data 👇')
-                st.write(pd.DataFrame(data=db.get_preview(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)))
+                if email != '':
 
-                # Create text for Stripe checkout
-                stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+                    # Print summary
+                    st.write(data_selection)
 
-                # Generate and display Stripe payment link
-                if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text)
-                    if payment_url:
-                        st.write("Click the link below to complete your payment:")
-                        st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
+                    # Create text for Stripe checkout
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+
+                    # Generate and display Stripe payment link
+                    if st.button("Proceed to Payment"):
+                        payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{email};Opening;{selected_sport};{selected_from_date};{selected_to_date};{selected_leagues};{selected_markets};{selected_periods}')
+                        if payment_url:
+                            st.write("Click the link below to complete your payment:")
+                            st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
+
+                    # Show sneak preview
+                    st.write('Here is a sneak preview of your data 👇')
+                    st.write(pd.DataFrame(data=db.get_preview(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)))
 
             if selected_type == 'Granular':
 
@@ -122,27 +130,32 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
-                # Print summary
-                st.write(data_selection)
-                st.write('You will receive 3 tables: :orange[fixtures], :orange[odds] and :orange[results]. Each event can be mapped via the unique event_id.')
+                # Provide email
+                email = st.text_input("Your email address", max_chars=100,  help='A download link will be sent to this email address.')
 
-                # Create text for Stripe checkout
-                stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+                if email != '':
 
-                # Generate and display Stripe payment link
-                if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text)
-                    if payment_url:
-                        st.write("Click the link below to complete your payment:")
-                        st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
+                    # Print summary
+                    st.write(data_selection)
+                    st.write('You will receive 3 tables: :orange[fixtures], :orange[odds] and :orange[results]. Each event can be mapped via the unique event_id.')
 
-                # Show sneak preview
-                st.write('Here is a sneak preview of your data 👇')
-                st.write('Fixtures')
-                st.write(pd.DataFrame(data=db.get_granular_fixtures_preview(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)))
+                    # Create text for Stripe checkout
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
-                st.write('Odds')
-                st.write(pd.DataFrame(data=db.get_granular_odds_preview(event_ids=event_ids, markets=selected_markets, periods=selected_periods)))
+                    # Generate and display Stripe payment link
+                    if st.button("Proceed to Payment"):
+                        payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{email};Granular;{selected_sport};{selected_from_date};{selected_to_date};{selected_leagues};{selected_markets};{selected_periods}')
+                        if payment_url:
+                            st.write("Click the link below to complete your payment:")
+                            st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
 
-                st.write('Results')
-                st.write(pd.DataFrame(data=db.get_granular_results_preview(event_ids=event_ids, periods=selected_periods)))
+                    # Show sneak preview
+                    st.write('Here is a sneak preview of your data 👇')
+                    st.write('Fixtures')
+                    st.write(pd.DataFrame(data=db.get_granular_fixtures_preview(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)))
+
+                    st.write('Odds')
+                    st.write(pd.DataFrame(data=db.get_granular_odds_preview(event_ids=event_ids, markets=selected_markets, periods=selected_periods)))
+
+                    st.write('Results')
+                    st.write(pd.DataFrame(data=db.get_granular_results_preview(event_ids=event_ids, periods=selected_periods)))
