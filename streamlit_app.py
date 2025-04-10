@@ -100,7 +100,10 @@ if selected_leagues != '()':
                 event_ids = f"({','.join(event_ids)})"
                 rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
 
-                st.write(rowcount)
+                total_cost = rowcount / 25000
+                data_selection = f'SUMMARY\n\n'
+                data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
+                data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
 
 
