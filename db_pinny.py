@@ -38,11 +38,11 @@ def get_granular_fixtures_preview(date_from: datetime, date_to: datetime, league
 
 def get_granular_odds_preview(event_ids: str, markets: str, periods: str):
 
-    return conn.query(f"SELECT * FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods} ORDER BY RAND() LIMIT 3")
+    return conn.query(f"SELECT * FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods} LIMIT 3")
 
 
 def get_granular_results_preview(event_ids: str, periods: str):
 
-    return conn.query(f"SELECT * FROM {TABLE_RESULTS} WHERE event_id IN {event_ids} AND period IN {periods} ORDER BY RAND() LIMIT 3")
+    return conn.query(f"SELECT * FROM {TABLE_RESULTS} WHERE event_id IN {event_ids} AND period IN {periods} LIMIT 3")
 
 

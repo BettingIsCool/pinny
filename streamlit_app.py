@@ -43,27 +43,29 @@ if selected_leagues != '()':
 
             if selected_type == 'Closing':
 
+                # Get row count for selected data
                 placeholder1 = st.empty()
                 placeholder1.write(f":red[Looking up you data. This can take a while. Please be patient.]")
                 rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
                 placeholder1.empty()
 
+                # Get total cost for selected data
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                # Print summary
                 st.write(data_selection)
 
-                preview = db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
-                preview_df = pd.DataFrame(data=preview)
-
+                # Show sneak preview
                 st.write('Here is a sneak preview of your data 👇')
-                st.write(preview_df)
+                st.write(pd.DataFrame(data=db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)))
 
+                # Create text for Stripe checkout
                 stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
-                # Step 3: Generate and display Stripe payment link
+                # Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
                     payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
                     if payment_url:
@@ -72,27 +74,29 @@ if selected_leagues != '()':
 
             if selected_type == 'Opening':
 
+                # Get row count for selected data
                 placeholder1 = st.empty()
                 placeholder1.write(f":red[Looking up you data. This can take a while. Please be patient.]")
                 rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
                 placeholder1.empty()
 
+                # Get total cost for selected data
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                # Print summary
                 st.write(data_selection)
 
-                preview = db.get_preview(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
-                preview_df = pd.DataFrame(data=preview)
-
+                # Show sneak preview
                 st.write('Here is a sneak preview of your data 👇')
-                st.write(preview_df)
+                st.write(pd.DataFrame(data=db.get_preview(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)))
 
+                # Create text for Stripe checkout
                 stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
-                # Step 3: Generate and display Stripe payment link
+                # Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
                     payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
                     if payment_url:
@@ -101,6 +105,7 @@ if selected_leagues != '()':
 
             if selected_type == 'Granular':
 
+                # Get row count for selected data
                 placeholder1 = st.empty()
                 placeholder1.write(f":red[Looking up you data. This can take a while. Please be patient.]")
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
@@ -109,13 +114,23 @@ if selected_leagues != '()':
                 rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
                 placeholder1.empty()
 
-                total_cost = rowcount / 100000
+                # Get total cost for selected data
+                total_cost = rowcount / 250000
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                # Print summary
                 st.write(data_selection)
 
+                # Show sneak preview
+                st.write('You will receive 3 tables: fixtures, odds and results. Each event can be mapped via the unique event_id.')
+
+                st.write('Fixtures')
                 st.write(pd.DataFrame(data=db.get_granular_fixtures_preview(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)))
+
+                st.write('Odds')
                 st.write(pd.DataFrame(data=db.get_granular_odds_preview(event_ids=event_ids, markets=selected_markets, periods=selected_periods)))
+
+                st.write('Results')
                 st.write(pd.DataFrame(data=db.get_granular_results_preview(event_ids=event_ids, periods=selected_periods)))
