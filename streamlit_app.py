@@ -55,7 +55,7 @@ if selected_leagues != '()':
 
                 # Step 3: Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=data_selection)
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
                     if payment_url:
                         st.write("Click the link below to complete your payment:")
                         st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
