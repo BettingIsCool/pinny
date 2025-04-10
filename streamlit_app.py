@@ -7,8 +7,6 @@ import datetime
 import stripe_api
 import pandas as pd
 import db_pinny as db
-from colorama import Fore
-
 
 
 from config import SPORTS, PERIODS, TABLE_CLOSING
@@ -50,7 +48,7 @@ if selected_leagues != '()':
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n\n'
-                data_selection += f'{Fore.RED}Total cost: €{total_cost:.2f}\n'
+                data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
                 st.write(data_selection)
 
@@ -70,3 +68,4 @@ if selected_leagues != '()':
                     if payment_url:
                         st.write("Click the link below to complete your payment:")
                         st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
+

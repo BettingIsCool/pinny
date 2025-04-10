@@ -1,5 +1,4 @@
 pandas
 stripe
-colorama
 SQLAlchemy
 mysql-connector-python
