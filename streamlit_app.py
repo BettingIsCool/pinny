@@ -64,7 +64,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -100,7 +100,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -140,7 +140,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows in csv format'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -164,5 +164,4 @@ if selected_leagues != '()':
 # Check for redirect (success or cancel) and display message
 query_params = st.query_params  # Using the updated method
 if "success" in query_params or "cancel" in query_params:
-    st.success("Order submitted.")
-    st.write("We are processing your request. You will receive a download link via email once the data is ready.")
+    st.success("Order submitted. We are processing your request. You will receive a download link via email once the data is ready.")
