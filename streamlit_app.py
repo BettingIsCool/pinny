@@ -67,7 +67,7 @@ if selected_leagues != '()':
                         st.write("Click the link below to complete your payment:")
                         st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
 
-            elif selected_type == 'Opening':
+            if selected_type == 'Opening':
 
                 rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
 
