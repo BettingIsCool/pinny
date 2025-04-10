@@ -19,23 +19,8 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
-
 leagues_count = len(selected_leagues)
-leagues_text = f""
-for league in selected_leagues:
-    leagues_text += f"{leagues[league]}\n\n"
-
-
 selected_leagues = [f"{s}" for s in selected_leagues]
-
-st.write(selected_leagues)
-
-
-
-
-st.write(leagues_text)
-
-
 selected_leagues = f"({','.join(selected_leagues)})"
 
 if selected_leagues != '()':
@@ -64,7 +49,7 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n\n'
                 data_selection += f'Total cost: €{total_cost:.2f}\n'
 
-                stripe_text = f'Betting Data for the following leagues: \n\n'
+                stripe_text = f'Betting Data for {leagues_count} leagues, {rowcount} rows'
 
                 st.write(data_selection)
 
