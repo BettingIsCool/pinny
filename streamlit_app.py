@@ -21,6 +21,14 @@ leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
 selected_leagues = [f"{s}" for s in selected_leagues]
 leagues_count = len(selected_leagues)
+
+leagues_text = f""
+for league in selected_leagues:
+    leagues_text += f"{leagues[league]}\n"
+
+st.write(leagues_text)
+
+
 selected_leagues = f"({','.join(selected_leagues)})"
 
 if selected_leagues != '()':
@@ -49,6 +57,8 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n\n'
                 data_selection += f'Total cost: €{total_cost:.2f}\n'
 
+                stripe_text = f'Betting Data for the following leagues: \n\n'
+
                 st.write(data_selection)
 
                 # Step 3: Generate and display Stripe payment link
@@ -56,4 +66,4 @@ if selected_leagues != '()':
                     payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=data_selection)
                     if payment_url:
                         st.write("Click the link below to complete your payment:")
-                        st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
+                        st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")

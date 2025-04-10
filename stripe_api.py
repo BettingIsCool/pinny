@@ -15,7 +15,7 @@ def create_checkout_session(total_cost: float, data_selection: str):
                 "price_data": {
                     "currency": "eur",
                     "product_data": {
-                        "name": f"Betting Data - {data_selection}",
+                        "name": data_selection,
                     },
                     "unit_amount": int(total_cost * 100),  # Stripe expects amount in cents
                 },
