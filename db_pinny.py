@@ -13,7 +13,9 @@ def get_unique_leagues(sport: str, date_from: datetime, date_to: datetime):
 
 def get_rowcount(table: str, date_from: datetime, date_to: datetime, league_ids: list, markets: list, periods: list):
 
-    return conn.query(f"SELECT COUNT(event_id) FROM {TABLE_CLOSING} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
+    return conn.query(f"SELECT COUNT(event_id) FROM {table} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
 
 
+def get_preview(table: str, date_from: datetime, date_to: datetime, league_ids: list, markets: list, periods: list):
 
+    return conn.query(f"SELECT * FROM {table} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} AND market IN {markets} AND period IN {periods} LIMIT 3")
