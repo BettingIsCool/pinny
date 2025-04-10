@@ -65,9 +65,11 @@ if selected_leagues != '()':
                 # Create text for Stripe checkout
                 stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
+                st.write(f'{selected_sport},{selected_from_date},{selected_to_date},{selected_leagues},{selected_markets},{selected_periods}')
+
                 # Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{selected_sport},{selected_from_date},{selected_to_date},{selected_leagues},{selected_markets},{selected_periods}')
                     if payment_url:
                         st.write("Click the link below to complete your payment:")
                         st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
@@ -98,7 +100,7 @@ if selected_leagues != '()':
 
                 # Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text)
                     if payment_url:
                         st.write("Click the link below to complete your payment:")
                         st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
@@ -129,7 +131,7 @@ if selected_leagues != '()':
 
                 # Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
-                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text)
                     if payment_url:
                         st.write("Click the link below to complete your payment:")
                         st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")

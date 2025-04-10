@@ -6,7 +6,7 @@ from stripe.error import StripeError
 stripe.api_key = st.secrets["stripe_api_key"]  # Replace with your actual secret key
 
 
-def create_checkout_session(total_cost: float, data_selection: str):
+def create_checkout_session(total_cost: float, stripe_text_for_client: str, selected_data: str):
     try:
         # Create a Checkout Session
         session = stripe.checkout.Session.create(
@@ -15,7 +15,7 @@ def create_checkout_session(total_cost: float, data_selection: str):
                 "price_data": {
                     "currency": "eur",
                     "product_data": {
-                        "name": data_selection,
+                        "name": stripe_text_for_client,
                     },
                     "unit_amount": int(total_cost * 100),  # Stripe expects amount in cents
                 },
@@ -24,6 +24,9 @@ def create_checkout_session(total_cost: float, data_selection: str):
             mode="payment",
             success_url="https://pinnacledata.streamlit.app/?success=true",
             cancel_url="https://pinnacledata.streamlit.app/?cancel=true",
+            metadata={
+                "selected_data": selected_data,
+            }
         )
         return session.url
     except StripeError as e:
