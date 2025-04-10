@@ -19,15 +19,19 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
-selected_leagues = [f"{s}" for s in selected_leagues]
+
 leagues_count = len(selected_leagues)
+leagues_text = f""
+for league in selected_leagues:
+    leagues_text += f"{leagues[league]}\n"
+
+
+selected_leagues = [f"{s}" for s in selected_leagues]
 
 st.write(selected_leagues)
 
 
-leagues_text = f""
-for league in selected_leagues:
-    leagues_text += f"{leagues[league]}\n"
+
 
 st.write(leagues_text)
 
