@@ -162,7 +162,7 @@ if selected_leagues != '()':
 
 
 # Check for successful payment
-query_params = st.query_params()
+query_params = st.experimental_get_query_params()
 if "success" in query_params and query_params["success"][0] == "true":
     session_id = query_params.get("session_id", [None])[0] or st.session_state.get("checkout_session_id")
     if session_id:
