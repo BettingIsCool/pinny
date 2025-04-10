@@ -29,3 +29,20 @@ def get_granular_event_ids(date_from: datetime, date_to: datetime, league_ids: s
 def get_granular_rowcount(event_ids: str, markets: str, periods: str):
 
     return conn.query(f"SELECT COUNT(id) FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
+
+
+def get_granular_fixtures_preview(date_from: datetime, date_to: datetime, league_ids: str):
+
+    return conn.query(f"SELECT * FROM {TABLE_FIXTURES} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} ORDER BY RAND() LIMIT 3")
+
+
+def get_granular_odds_preview(event_ids: str, markets: str, periods: str):
+
+    return conn.query(f"SELECT * FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods} ORDER BY RAND() LIMIT 3")
+
+
+def get_granular_results_preview(event_ids: str, periods: str):
+
+    return conn.query(f"SELECT * FROM {TABLE_RESULTS} WHERE event_id IN {event_ids} AND period IN {periods} ORDER BY RAND() LIMIT 3")
+
+

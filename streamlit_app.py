@@ -116,6 +116,6 @@ if selected_leagues != '()':
 
                 st.write(data_selection)
 
-
-
-
+                st.write(pd.DataFrame(data=db.get_granular_fixtures_preview(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)))
+                st.write(pd.DataFrame(data=db.get_granular_odds_preview(event_ids=event_ids, markets=selected_markets, periods=selected_periods)))
+                st.write(pd.DataFrame(data=db.get_granular_results_preview(event_ids=event_ids, periods=selected_periods)))
