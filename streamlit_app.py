@@ -44,7 +44,7 @@ if selected_leagues != '()':
 
                 rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
 
-                total_cost = rowcount[0]['COUNT(event_id)'] / 2500
+                total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n'
                 data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n'
                 data_selection += f'Total cost: €{total_cost:.2f}\n'
