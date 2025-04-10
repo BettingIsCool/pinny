@@ -1,1 +1,10 @@
 /.streamlit/secrets.toml
+/_update_closing_odds_remote.py
+/config_local.py
+/_process_closing_data_local.py
+/db_local.py
+/my_sql.py
+/oddsmath.py
+/_process_opening_data_local.py
+/db_remote.py
+/_update_opening_odds_remote.py
