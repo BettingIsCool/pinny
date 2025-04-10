@@ -46,7 +46,7 @@ if selected_leagues != '()':
 
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n'
-                data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n'
+                data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n\n'
                 data_selection += f'Total cost: €{total_cost:.2f}\n'
 
                 st.write(data_selection)
