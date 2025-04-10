@@ -71,7 +71,7 @@ if selected_leagues != '()':
                         session = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{email};Closing;{selected_sport};{selected_from_date};{selected_to_date};{selected_leagues};{selected_markets};{selected_periods}')
                         if session:
                             st.session_state["checkout_session_id"] = session.id
-                            st.markdown(f"[Pay ${total_cost:.2f} Now]({session.url})")
+                            st.markdown(f"[Pay €{total_cost:.2f} Now]({session.url})")
 
                     # Show sneak preview
                     st.write('Here is a sneak preview of your data 👇')
@@ -107,7 +107,7 @@ if selected_leagues != '()':
                         session = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{email};Opening;{selected_sport};{selected_from_date};{selected_to_date};{selected_leagues};{selected_markets};{selected_periods}')
                         if session:
                             st.session_state["checkout_session_id"] = session.id
-                            st.markdown(f"[Pay ${total_cost:.2f} Now]({session.url})")
+                            st.markdown(f"[Pay €{total_cost:.2f} Now]({session.url})")
 
                     # Show sneak preview
                     st.write('Here is a sneak preview of your data 👇')
@@ -147,7 +147,7 @@ if selected_leagues != '()':
                         session = stripe_api.create_checkout_session(total_cost=total_cost, stripe_text_for_client=stripe_text, selected_data=f'{email};Granular;{selected_sport};{selected_from_date};{selected_to_date};{selected_leagues};{selected_markets};{selected_periods}')
                         if session:
                             st.session_state["checkout_session_id"] = session.id
-                            st.markdown(f"[Pay ${total_cost:.2f} Now]({session.url})")
+                            st.markdown(f"[Pay €{total_cost:.2f} Now]({session.url})")
 
                     # Show sneak preview
                     st.write('Here is a sneak preview of your data 👇')
@@ -161,13 +161,8 @@ if selected_leagues != '()':
                     st.write(pd.DataFrame(data=db.get_granular_results_preview(event_ids=event_ids, periods=selected_periods)))
 
 
-# Check for successful payment
-query_params = st.query_params
-if "success" in query_params and query_params["success"][0] == "true":
-    session_id = query_params.get("session_id", [None])[0] or st.session_state.get("checkout_session_id")
-    if session_id:
-        st.success("Order submitted successfully!")
-        st.write("We are processing your request. You will receive a download link via email once the data is ready.")
-    else:
-        st.success("Order submitted successfully!")
-        st.write("We are processing your request. You will receive a download link via email once the data is ready.")
+# Check for redirect (success or cancel) and display message
+query_params = st.query_params  # Using the updated method
+if "success" in query_params or "cancel" in query_params:
+    st.success("Order submitted.")
+    st.write("We are processing your request. You will receive a download link via email once the data is ready.")
