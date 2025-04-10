@@ -59,7 +59,7 @@ if selected_leagues != '()':
                 st.write(data_selection)
 
                 # Provide email
-                email = st.text_input("Your email address", max_chars=100, help='A download link will be sent to this email address.')
+                email = st.text_input("Your email address (hit Enter when done)", max_chars=100, help='A download link will be sent to this email address.')
 
                 if email != '':
 
@@ -95,7 +95,7 @@ if selected_leagues != '()':
                 st.write(data_selection)
 
                 # Provide email
-                email = st.text_input("Your email address", max_chars=100, help='A download link will be sent to this email address.')
+                email = st.text_input("Your email address (hit Enter when done)", max_chars=100, help='A download link will be sent to this email address.')
 
                 if email != '':
 
@@ -135,7 +135,7 @@ if selected_leagues != '()':
                 st.write('You will receive 3 tables: :orange[fixtures], :orange[odds] and :orange[results]. Each event can be mapped via the unique event_id.')
 
                 # Provide email
-                email = st.text_input("Your email address", max_chars=100,  help='A download link will be sent to this email address.')
+                email = st.text_input("Your email address (hit Enter when done)", max_chars=100,  help='A download link will be sent to this email address.')
 
                 if email != '':
 
