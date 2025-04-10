@@ -124,7 +124,7 @@ if selected_leagues != '()':
                 st.write(data_selection)
 
                 # Show sneak preview
-                st.write('You will receive 3 tables: :yellow[fixtures], :yellow[odds] and :yellow[results]. Each event can be mapped via the unique event_id.')
+                st.write('You will receive 3 tables: :orange[fixtures], :yellow[odds] and :yellow[results]. Each event can be mapped via the unique event_id.')
 
                 st.write('Fixtures')
                 st.write(pd.DataFrame(data=db.get_granular_fixtures_preview(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)))
