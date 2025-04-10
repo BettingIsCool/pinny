@@ -9,7 +9,7 @@ import pandas as pd
 import db_pinny as db
 
 
-from config import SPORTS, PERIODS, TABLE_CLOSING
+from config import SPORTS, PERIODS, TABLE_CLOSING, TABLE_OPENING
 
 selected_type = st.selectbox(label='Type', options=['Opening', 'Closing', 'Granular'], help='What type of data do you need? Opening...opening odds, Closing...closing odds, Granular...all odds (the complete odds history for each match updated roughly every 10 seconds).')
 selected_sport = st.selectbox(label='Sport', options=SPORTS.keys(), help='You can request only one sport at a time. If you need data for more sports please submit multiple requests.')
@@ -55,12 +55,36 @@ if selected_leagues != '()':
                 preview = db.get_preview(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
                 preview_df = pd.DataFrame(data=preview)
 
-                st.write('👇 Here is a sneak preview of your data 👇')
+                st.write('Here is a sneak preview of your data 👇')
                 st.write(preview_df)
 
-                stripe_text = f'Betting Data for {leagues_count} leagues, {rowcount} rows.'
+                stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
+                # Step 3: Generate and display Stripe payment link
+                if st.button("Proceed to Payment"):
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
+                    if payment_url:
+                        st.write("Click the link below to complete your payment:")
+                        st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
 
+            elif selected_type == 'Opening':
+
+                rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
+
+                total_cost = rowcount / 2500
+                data_selection = f'SUMMARY\n\n'
+                data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
+                data_selection += f'Total cost: :red[€{total_cost:.2f}]\n'
+
+                st.write(data_selection)
+
+                preview = db.get_preview(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)
+                preview_df = pd.DataFrame(data=preview)
+
+                st.write('Here is a sneak preview of your data 👇')
+                st.write(preview_df)
+
+                stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
 
                 # Step 3: Generate and display Stripe payment link
                 if st.button("Proceed to Payment"):
