@@ -39,12 +39,15 @@ if selected_leagues != '()':
         selected_periods = [f"{s}" for s in selected_periods]
         selected_periods = f"({','.join(selected_periods)})"
 
+        placeholder1 = st.empty()
+
         if selected_periods != '()':
 
             if selected_type == 'Closing':
 
-                st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+                placeholder1.write(f":red[Looking up you data. This can take a while. Please be patient.]")
                 rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
+                placeholder1.empty()
 
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
