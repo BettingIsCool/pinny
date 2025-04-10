@@ -159,3 +159,14 @@ if selected_leagues != '()':
 
                     st.write('Results')
                     st.write(pd.DataFrame(data=db.get_granular_results_preview(event_ids=event_ids, periods=selected_periods)))
+
+
+# Check for successful payment
+query_params = st.experimental_get_query_params()
+if "success" in query_params and query_params["success"][0] == "true":
+    session_id = query_params.get("session_id", [None])[0] or st.session_state.get("checkout_session_id")
+    if session_id:
+        st.success("Order submitted successfully!")
+        st.write("We are processing your request. You will receive a download link via email once the data is ready.")
+    else:
+        st.error("Payment session not found. Please contact support.")

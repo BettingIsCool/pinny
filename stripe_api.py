@@ -28,7 +28,6 @@ def create_checkout_session(total_cost: float, stripe_text_for_client: str, sele
                 "selected_data": selected_data,
             }
         )
-        st.write('Thank you for your purchase!')
         return session.url
     except StripeError as e:
         st.error(f"Error creating payment link: {str(e)}")
