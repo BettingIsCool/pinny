@@ -45,6 +45,8 @@ if selected_leagues != '()':
 
                 rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
 
+                st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
@@ -70,6 +72,8 @@ if selected_leagues != '()':
             if selected_type == 'Opening':
 
                 rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
+
+                st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
 
                 total_cost = rowcount / 2500
                 data_selection = f'SUMMARY\n\n'
@@ -100,7 +104,9 @@ if selected_leagues != '()':
                 event_ids = f"({','.join(event_ids)})"
                 rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
 
-                total_cost = rowcount / 25000
+                st.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+
+                total_cost = rowcount / 100000
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
