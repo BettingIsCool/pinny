@@ -105,6 +105,8 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                st.write(data_selection)
+
 
 
 
