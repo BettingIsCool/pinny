@@ -122,10 +122,20 @@ if selected_leagues != '()':
 
                 # Print summary
                 st.write(data_selection)
+                st.write('You will receive 3 tables: :orange[fixtures], :orange[odds] and :orange[results]. Each event can be mapped via the unique event_id.')
+
+                # Create text for Stripe checkout
+                stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
+
+                # Generate and display Stripe payment link
+                if st.button("Proceed to Payment"):
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=stripe_text)
+                    if payment_url:
+                        st.write("Click the link below to complete your payment:")
+                        st.markdown(f"[Pay €{total_cost:.2f} Now]({payment_url})")
 
                 # Show sneak preview
-                st.write('You will receive 3 tables: :orange[fixtures], :yellow[odds] and :yellow[results]. Each event can be mapped via the unique event_id.')
-
+                st.write('Here is a sneak preview of your data 👇')
                 st.write('Fixtures')
                 st.write(pd.DataFrame(data=db.get_granular_fixtures_preview(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)))
 
