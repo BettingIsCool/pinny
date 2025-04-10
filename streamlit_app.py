@@ -64,7 +64,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {selected_leagues} and {selected_markets} and {selected_periods} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -100,7 +100,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {selected_leagues} and {selected_markets} and {selected_periods} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -140,7 +140,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows in csv format'
+                    stripe_text = f'{selected_type} odds for {selected_leagues} and {selected_markets} and {selected_periods} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
