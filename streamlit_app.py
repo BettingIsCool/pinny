@@ -55,13 +55,13 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                # Print summary
+                st.write(data_selection)
+
                 # Provide email
                 email = st.text_input("Your email address", max_chars=100, help='A download link will be sent to this email address.')
 
                 if email != '':
-
-                    # Print summary
-                    st.write(data_selection)
 
                     # Create text for Stripe checkout
                     stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
@@ -91,13 +91,13 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                # Print summary
+                st.write(data_selection)
+
                 # Provide email
                 email = st.text_input("Your email address", max_chars=100, help='A download link will be sent to this email address.')
 
                 if email != '':
-
-                    # Print summary
-                    st.write(data_selection)
 
                     # Create text for Stripe checkout
                     stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
@@ -130,14 +130,14 @@ if selected_leagues != '()':
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
 
+                # Print summary
+                st.write(data_selection)
+                st.write('You will receive 3 tables: :orange[fixtures], :orange[odds] and :orange[results]. Each event can be mapped via the unique event_id.')
+
                 # Provide email
                 email = st.text_input("Your email address", max_chars=100,  help='A download link will be sent to this email address.')
 
                 if email != '':
-
-                    # Print summary
-                    st.write(data_selection)
-                    st.write('You will receive 3 tables: :orange[fixtures], :orange[odds] and :orange[results]. Each event can be mapped via the unique event_id.')
 
                     # Create text for Stripe checkout
                     stripe_text = f'{selected_type} odds for {leagues_count} leagues, {rowcount} rows.'
