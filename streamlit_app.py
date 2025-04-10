@@ -96,4 +96,5 @@ if selected_leagues != '()':
             if selected_type == 'Granular':
 
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
+                st.write(event_ids)
 
