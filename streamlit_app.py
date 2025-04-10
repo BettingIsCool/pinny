@@ -23,31 +23,37 @@ selected_leagues = [f"{s}" for s in selected_leagues]
 leagues_count = len(selected_leagues)
 selected_leagues = f"({','.join(selected_leagues)})"
 
-# Process markets
-selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
-selected_markets = [f"'{s}'" for s in selected_markets]
-selected_markets = f"({','.join(selected_markets)})"
+if selected_leagues != '()':
 
-# Process periods
-period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
-selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
-selected_periods = [f"{s}" for s in selected_periods]
-selected_periods = f"({','.join(selected_periods)})"
+    # Process markets
+    selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
+    selected_markets = [f"'{s}'" for s in selected_markets]
+    selected_markets = f"({','.join(selected_markets)})"
 
-if selected_type == 'Closing':
+    if selected_markets != '()':
 
-    rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
+        # Process periods
+        period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
+        selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
+        selected_periods = [f"{s}" for s in selected_periods]
+        selected_periods = f"({','.join(selected_periods)})"
 
-    total_cost = rowcount[0]['COUNT(event_id)'] / 2500
-    data_selection = f'SUMMARY\n'
-    data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n'
-    data_selection += f'Total cost: €{total_cost:.2f}\n'
+        if selected_periods != '()':
 
-    st.write(data_selection)
+            if selected_type == 'Closing':
 
-    # Step 3: Generate and display Stripe payment link
-    if st.button("Proceed to Payment"):
-        payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=data_selection)
-        if payment_url:
-            st.write("Click the link below to complete your payment:")
-            st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
+                rowcount = db.get_rowcount(table=TABLE_CLOSING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
+
+                total_cost = rowcount[0]['COUNT(event_id)'] / 2500
+                data_selection = f'SUMMARY\n'
+                data_selection += f'Your data selection has {rowcount} rows across {leagues_count} leagues.\n'
+                data_selection += f'Total cost: €{total_cost:.2f}\n'
+
+                st.write(data_selection)
+
+                # Step 3: Generate and display Stripe payment link
+                if st.button("Proceed to Payment"):
+                    payment_url = stripe_api.create_checkout_session(total_cost=total_cost, data_selection=data_selection)
+                    if payment_url:
+                        st.write("Click the link below to complete your payment:")
+                        st.markdown(f"[Pay ${total_cost:.2f} Now]({payment_url})")
