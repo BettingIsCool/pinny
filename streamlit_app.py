@@ -23,7 +23,7 @@ selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()
 leagues_count = len(selected_leagues)
 leagues_text = f""
 for league in selected_leagues:
-    leagues_text += f"{leagues[league]}\n"
+    leagues_text += f"{leagues[league]}\n\n"
 
 
 selected_leagues = [f"{s}" for s in selected_leagues]
