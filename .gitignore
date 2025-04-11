@@ -8,3 +8,4 @@
 /_process_opening_data_local.py
 /db_remote.py
 /_update_opening_odds_remote.py
+/granular_query.py

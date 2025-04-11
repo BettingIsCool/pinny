@@ -28,6 +28,7 @@ if selected_leagues != '()':
 
     # Process markets
     selected_markets = st.multiselect(label='Markets', options=['moneyline', 'spread', 'totals', 'home_totals', 'away_totals'], help='Please select the markets you need the data for.')
+    markets_count = len(selected_markets)
     selected_markets = [f"'{s}'" for s in selected_markets]
     selected_markets = f"({','.join(selected_markets)})"
 
@@ -35,6 +36,7 @@ if selected_leagues != '()':
 
         # Process periods
         period_options = {k[1]: v for k, v in PERIODS.items() if k[0] == SPORTS[selected_sport]}
+        periods_count = len(period_options)
         selected_periods = st.multiselect(label='Periods', options=period_options.keys(), format_func=lambda x: period_options.get(x), help='Please select the periods you need the data for.')
         selected_periods = [f"{s}" for s in selected_periods]
         selected_periods = f"({','.join(selected_periods)})"
@@ -64,7 +66,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {selected_leagues} and {selected_markets} and {selected_periods} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} and {markets_count} and {periods_count} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -100,7 +102,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {selected_leagues} and {selected_markets} and {selected_periods} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} and {markets_count} and {periods_count} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -140,7 +142,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {selected_leagues} and {selected_markets} and {selected_periods} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} and {markets_count} and {periods_count} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
