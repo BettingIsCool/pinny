@@ -66,7 +66,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} and {markets_count} and {periods_count} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues and {markets_count} markets and {periods_count} periods from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -102,7 +102,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} and {markets_count} and {periods_count} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues and {markets_count} markets and {periods_count} periods from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
@@ -142,7 +142,7 @@ if selected_leagues != '()':
                 if email != '':
 
                     # Create text for Stripe checkout
-                    stripe_text = f'{selected_type} odds for {leagues_count} and {markets_count} and {periods_count} from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
+                    stripe_text = f'{selected_type} odds for {leagues_count} leagues and {markets_count} markets and {periods_count} periods from {selected_from_date} to {selected_to_date}. {rowcount} rows in csv format.'
 
                     # Generate and display Stripe payment link
                     if st.button("Proceed to Payment"):
