@@ -127,7 +127,7 @@ if selected_leagues != '()':
                 placeholder1.empty()
 
                 # Get total cost for selected data
-                total_cost = rowcount / 250000
+                total_cost = rowcount / 125000
                 data_selection = f'SUMMARY\n\n'
                 data_selection += f'Your data selection has :green[{rowcount}] rows across :green[{leagues_count}] leagues.\n\n'
                 data_selection += f'Total cost: :blue[€{total_cost:.2f}]\n'
