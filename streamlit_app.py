@@ -1,5 +1,7 @@
 import streamlit as st
 
+import db_pinny
+
 st.set_page_config(page_title="PinnacleData by BettingIsCool", page_icon="💾", layout="wide", initial_sidebar_state="expanded")
 st.title('PinnacleData by BettingIsCool')
 
@@ -19,7 +21,16 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 # Get leagues
 leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
-selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
+
+if selected_sport == 'Tennis':
+    selected_tour = st.radio(label='Select Tour', options=['ATP', 'ATP Challenger', 'WTA', 'WTA 125k', 'ITF Men', 'ITF Women', 'Custom Selection'], index=6)
+    if selected_tour != 'Custom Selection':
+        selected_leagues = db_pinny.get_unique_leagues_id(sport='Tennis',date_from=selected_from_date, date_to=selected_to_date, tour=selected_tour)
+    else:
+        selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
+else:
+    selected_leagues = st.multiselect(label='Leagues', options=sorted(leagues.keys()), format_func=lambda x: leagues.get(x), placeholder='Start typing...', help='Please select the leagues you need the data for.')
+
 leagues_count = len(selected_leagues)
 selected_leagues = [f"{s}" for s in selected_leagues]
 selected_leagues = f"({','.join(selected_leagues)})"
