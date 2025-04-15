@@ -22,6 +22,8 @@ selected_to_date = st.date_input(label='End date', value='today', min_value=date
 leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from_date, date_to=selected_to_date)
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 
+st.write(selected_sport)
+
 if selected_sport == 'Tennis':
     selected_tour = st.radio(label='Select Tour', options=['ATP', 'ATP Challenger', 'WTA', 'WTA 125k', 'ITF Men', 'ITF Women', 'Custom Selection'], index=6)
     if selected_tour != 'Custom Selection':
