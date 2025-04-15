@@ -31,6 +31,19 @@ def get_granular_rowcount(event_ids: str, markets: str, periods: str):
     return conn.query(f"SELECT COUNT(id) FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
 
 
+def get_granular_rowcount_parameterized(event_ids: str, markets: str, periods: str):
+
+    query = "SELECT COUNT(id) FROM TABLE_ODDS WHERE event_id IN (%s) AND market IN (%s) AND period IN (%s)"
+
+    # Convert lists to comma-separated placeholders for MySQL
+    event_placeholders = ','.join(['%s'] * len(event_ids))
+    market_placeholders = ','.join(['%s'] * len(markets))
+    period_placeholders = ','.join(['%s'] * len(periods))
+
+    query = f"SELECT COUNT(id) FROM TABLE_ODDS WHERE event_id IN ({event_placeholders}) AND market IN ({market_placeholders}) AND period IN ({period_placeholders})"
+    return conn.query(query, event_ids + markets + periods).to_dict('records')
+
+
 def get_granular_fixtures_preview(date_from: datetime, date_to: datetime, league_ids: str):
 
     return conn.query(f"SELECT * FROM {TABLE_FIXTURES} WHERE starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_id IN {league_ids} ORDER BY RAND() LIMIT 3")
