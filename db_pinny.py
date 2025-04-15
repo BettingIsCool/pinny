@@ -1,5 +1,7 @@
+import ast
 import datetime
 import streamlit as st
+from sqlalchemy.sql import text
 from config import TABLE_LEAGUES, TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS, TABLE_OPENING, TABLE_CLOSING
 
 conn = st.connection('pinnacle', type='sql')
@@ -29,20 +31,6 @@ def get_granular_event_ids(date_from: datetime, date_to: datetime, league_ids: s
 def get_granular_rowcount(event_ids: str, markets: str, periods: str):
 
     return conn.query(f"SELECT COUNT(id) FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods}").to_dict('records')
-
-
-def get_granular_rowcount_parameterized(event_ids: str, markets: str, periods: str):
-
-    query = "SELECT COUNT(id) FROM TABLE_ODDS WHERE event_id IN (%s) AND market IN (%s) AND period IN (%s)"
-
-    # Convert lists to comma-separated placeholders for MySQL
-    event_placeholders = ','.join(['%s'] * len(event_ids))
-    market_placeholders = ','.join(['%s'] * len(markets))
-    period_placeholders = ','.join(['%s'] * len(periods))
-
-    query = f"SELECT COUNT(id) FROM TABLE_ODDS WHERE event_id IN ({event_placeholders}) AND market IN ({market_placeholders}) AND period IN ({period_placeholders})"
-    return conn.query(query, event_ids + markets + periods).to_dict('records')
-
 
 def get_granular_fixtures_preview(date_from: datetime, date_to: datetime, league_ids: str):
 
@@ -75,4 +63,50 @@ def get_unique_leagues_id(sport: str, date_from: datetime, date_to: datetime, to
         return {league_id for league_id in conn.query(f"SELECT DISTINCT(league_id) FROM {TABLE_FIXTURES} WHERE sport_name = '{sport}' AND starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_name LIKE '%ITF Women%'")['league_id']}
 
 
+def get_granular_rowcount_parameterized(event_ids: str, markets: str, periods: str):
+    # Parse string inputs into lists
+    try:
+        event_ids_list = ast.literal_eval(event_ids) if event_ids else []
+        markets_list = ast.literal_eval(markets) if markets else []
+        periods_list = ast.literal_eval(periods) if periods else []
+    except (ValueError, SyntaxError):
+        event_ids_list = [int(x) for x in event_ids.split(',') if x.strip()] if event_ids else []
+        markets_list = [x.strip() for x in markets.split(',') if x.strip()] if markets else []
+        periods_list = [int(x) for x in periods.split(',') if x.strip()] if periods else []
+
+    # Create placeholders for IN clauses
+    event_placeholders = ','.join([f':event_id_{i}' for i in range(len(event_ids_list))])
+    market_placeholders = ','.join([f':market_{i}' for i in range(len(markets_list))])
+    period_placeholders = ','.join([f':period_{i}' for i in range(len(periods_list))])
+
+    # Handle empty lists (to avoid invalid SQL)
+    if not event_ids_list:
+        event_placeholders = 'NULL'
+    if not markets_list:
+        market_placeholders = 'NULL'
+    if not periods_list:
+        period_placeholders = 'NULL'
+
+    # Parameterized query
+    query = text(
+        f"SELECT COUNT(id) FROM {TABLE_ODDS} "
+        f"WHERE event_id IN ({event_placeholders}) "
+        f"AND market IN ({market_placeholders}) "
+        f"AND period IN ({period_placeholders})"
+    )
+
+    # Prepare parameters
+    params = {}
+    for i, eid in enumerate(event_ids_list):
+        params[f'event_id_{i}'] = eid
+    for i, m in enumerate(markets_list):
+        params[f'market_{i}'] = m
+    for i, p in enumerate(periods_list):
+        params[f'period_{i}'] = p
+
+    # Execute query
+    result = conn.execute(query, params)
+
+    # Convert to dict format
+    return result.mappings().all()  # Equivalent to pandas to_dict('records')
 
