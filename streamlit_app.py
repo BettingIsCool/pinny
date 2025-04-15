@@ -94,7 +94,7 @@ if selected_leagues != '()':
 
                 # Get row count for selected data
                 placeholder1 = st.empty()
-                placeholder1.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+                placeholder1.write(f":red[Querying, please be patient. Depending on the amount of data this can take a very long time (30+ minutes)...]")
                 rowcount = db.get_rowcount(table=TABLE_OPENING, date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
                 placeholder1.empty()
 
@@ -130,11 +130,11 @@ if selected_leagues != '()':
 
                 # Get row count for selected data
                 placeholder1 = st.empty()
-                placeholder1.write(f":red[Looking up you data. This can take a while. Please be patient.]")
+                placeholder1.write(f":red[Querying, please be patient. Depending on the amount of data this can take a very long time (30+ minutes)...]")
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
                 event_ids = [f"{s}" for s in event_ids]
                 event_ids = f"({','.join(event_ids)})"
-                rowcount = db.get_granular_rowcount_parameterized(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
+                rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
                 placeholder1.empty()
 
                 # Get total cost for selected data
