@@ -143,7 +143,7 @@ if selected_leagues != '()':
                     chunk = [f"{s}" for s in chunk]
                     chunk = f"({','.join(chunk)})"
                     rowcount += db.get_granular_rowcount(event_ids=chunk, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
-                    placeholder2.write(f":green[Processed {rowcount} rows so far. ({round(100 * (i + 1) / (len(chunks)), 0)}%)]")
+                    placeholder2.write(f":green[Processed {rowcount} rows so far. ({round(100 * (i + 1) / (len(chunks)), 1)}%)]")
 
                 #event_ids = [f"{s}" for s in event_ids]
                 #event_ids = f"({','.join(event_ids)})"
