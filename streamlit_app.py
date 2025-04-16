@@ -145,10 +145,10 @@ if selected_leagues != '()':
                     rowcount += db.get_granular_rowcount(event_ids=chunk, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
                     placeholder2.write(f":green[Processed {rowcount} rows so far ({round(100 * (i + 1) / (len(chunks)), 1)}%).]")
 
-                #event_ids = [f"{s}" for s in event_ids]
-                #event_ids = f"({','.join(event_ids)})"
+                event_ids = [f"{s}" for s in event_ids]
+                event_ids = f"({','.join(event_ids)})"
                 #rowcount = db.get_granular_rowcount(event_ids=event_ids, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
-                #placeholder1.empty()
+                placeholder1.empty()
 
                 # Get total cost for selected data
                 total_cost = rowcount / 125000
