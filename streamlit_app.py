@@ -133,10 +133,13 @@ if selected_leagues != '()':
                 # Get row count for selected data
                 placeholder1 = st.empty()
                 placeholder1.write(f":red[Querying, please be patient! Depending on the selected league(s), granular data often has more than 500 million rows. Therefore queries can take a very long time (30+ minutes), please don't close the browser window or the tab. I'm already working on a solution to speed this up...]")
-                event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
+                event_ids = list(db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues))
+
+                n = 1000
+                chunks = [event_ids[i:i + n] for i in range(0, len(event_ids), n)]
 
                 rowcount = 0
-                for chunk in db_pinny.split_list_generator(list(event_ids), int(len(event_ids) / 1000) + 1):
+                for chunk in chunks:
                     chunk = [f"{s}" for s in chunk]
                     chunk = f"({','.join(chunk)})"
                     rowcount += db.get_granular_rowcount(event_ids=chunk, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
