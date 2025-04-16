@@ -4,7 +4,7 @@ import db_pinny
 
 st.set_page_config(page_title="PinnacleData by BettingIsCool", page_icon="💾", layout="wide", initial_sidebar_state="expanded")
 st.title('PinnacleData by BettingIsCool')
-st.subheader('Questions? Please get in touch at contact@bettingiscool.com')
+st.subheader('Questions or suggestions? Please get in touch at contact@bettingiscool.com')
 
 import datetime
 import stripe_api
