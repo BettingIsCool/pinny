@@ -5,7 +5,7 @@ import db_pinny
 st.set_page_config(page_title="PinnacleData by BettingIsCool", page_icon="💾", layout="wide", initial_sidebar_state="expanded")
 st.title('PinnacleData by BettingIsCool')
 st.subheader('Questions? Please get in touch at contact@bettingiscool.com')
-st.write(f":red[⚠️ Queries for granular odds are currently taking a long time. I'm already working on a solution to speed things up...]")
+st.write(f":red[⚠️ Queries for granular odds can take a long time. I'm already working on a solution to speed things up...]")
 
 import datetime
 import stripe_api
@@ -132,7 +132,7 @@ if selected_leagues != '()':
 
                 # Get row count for selected data
                 placeholder1 = st.empty()
-                placeholder1.write(f":red[Querying, please be patient! Depending on the selected leagues, granular odds often have more than 100 million rows. Therefore queries can take a very long time (30+ minutes), please don't close the browser window or the tab. I'm already working on a solution to speed this up...]")
+                placeholder1.write(f":red[Querying, please be patient! Depending on the selected league(s), granular data often has more than 500 million rows. Therefore queries can take a very long time (30+ minutes), please don't close the browser window or the tab. I'm already working on a solution to speed this up...]")
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
                 event_ids = [f"{s}" for s in event_ids]
                 event_ids = f"({','.join(event_ids)})"
