@@ -25,7 +25,7 @@ leagues_df = db.get_unique_leagues(sport=selected_sport, date_from=selected_from
 leagues = dict(zip(leagues_df.league_id, leagues_df.league_name))
 
 if selected_sport == 'Tennis':
-    selected_tour = st.radio(label='Select Tour', options=['ATP', 'ATP Challenger', 'WTA', 'WTA 125k', 'ITF Men', 'ITF Women', 'Custom Selection'], index=6)
+    selected_tour = st.radio(label='Select Tour', options=['All ATP Singles', 'All ATP Doubles', 'All ATP Challenger Singles', 'All ATP Challenger Doubles', 'All WTA Singles', 'All WTA Doubles', 'WTA 125k', 'ITF Men', 'ITF Women', 'Custom Selection'], index=6)
     if selected_tour != 'Custom Selection':
         selected_leagues = db_pinny.get_unique_leagues_id(sport='Tennis',date_from=selected_from_date, date_to=selected_to_date, tour=selected_tour)
     else:
