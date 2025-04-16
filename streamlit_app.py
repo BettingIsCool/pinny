@@ -14,7 +14,7 @@ import db_pinny as db
 
 from config import SPORTS, PERIODS, TABLE_CLOSING, TABLE_OPENING
 
-selected_type = st.selectbox(label='Type', options=['Opening', 'Closing', 'Granular'], help='What type of data do you need? Opening...opening odds, Closing...closing odds, Granular...all odds (the complete odds history for each match updated roughly every 10 seconds).')
+selected_type = st.selectbox(label='Type', options=['Opening', 'Closing', 'Granular'], help='What type of data do you need? Opening...opening odds, Closing...closing odds, Granular odds...all odds (the complete odds history for each match updated roughly every 10 seconds).')
 selected_sport = st.selectbox(label='Sport', options=SPORTS.keys(), help='You can request only one sport at a time. If you need data for more sports please submit multiple requests.')
 selected_from_date = st.date_input(label='Start date', value=datetime.date(year=2021, month=1, day=1), min_value=datetime.date(year=2021, month=1, day=1), help='When should your data start? You can either use the calendar or manually enter the date, i.e. 2024/08/19.')
 selected_to_date = st.date_input(label='End date', value='today', min_value=datetime.date(year=2021, month=1, day=1), help='When should your data end? You can either use the calendar or manually enter the date, i.e. 2024/08/19.')
@@ -143,7 +143,7 @@ if selected_leagues != '()':
                     chunk = [f"{s}" for s in chunk]
                     chunk = f"({','.join(chunk)})"
                     rowcount += db.get_granular_rowcount(event_ids=chunk, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
-                    placeholder2.write(f":green[Processed {rowcount} rows so far. ({round(100 * (i + 1) / (len(chunks)), 1)}%)]")
+                    placeholder2.write(f":green[Processed {rowcount} rows so far ({round(100 * (i + 1) / (len(chunks)), 1)}%).]")
 
                 #event_ids = [f"{s}" for s in event_ids]
                 #event_ids = f"({','.join(event_ids)})"
