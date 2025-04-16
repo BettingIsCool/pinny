@@ -34,4 +34,3 @@ PERIODS.update({(34, 0): 'Match'})
 PERIODS.update({(34, 1): '1st Set'})
 PERIODS.update({(22, 0): 'Fight'})
 PERIODS.update({(22, 1): 'Round 1'})
-

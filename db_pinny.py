@@ -80,3 +80,7 @@ def get_unique_leagues_id(sport: str, date_from: datetime, date_to: datetime, to
     elif tour == 'All ITF Women Doubles':
         return {league_id for league_id in conn.query(f"SELECT DISTINCT(league_id) FROM {TABLE_FIXTURES} WHERE sport_name = '{sport}' AND starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_name LIKE '%ITF Women%' AND league_name LIKE '%Doubles%'")['league_id']}
 
+
+def split_list_generator(my_list, chunk_size):
+    for i in range(0, len(my_list), chunk_size):
+        yield my_list[i:i + chunk_size]
