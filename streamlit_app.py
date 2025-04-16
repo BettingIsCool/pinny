@@ -138,13 +138,13 @@ if selected_leagues != '()':
                 n = 1000
                 chunks = [event_ids[i:i + n] for i in range(0, len(event_ids), n)]
 
-                placeholder1 = st.empty()
+                placeholder2 = st.empty()
                 rowcount = 0
                 for chunk in chunks:
                     chunk = [f"{s}" for s in chunk]
                     chunk = f"({','.join(chunk)})"
                     rowcount += db.get_granular_rowcount(event_ids=chunk, markets=selected_markets, periods=selected_periods)[0]['COUNT(id)']
-                    placeholder1.write(f"Processed {n} events so far...")
+                    placeholder2.write(f"Processed {n} events so far...")
 
                 #event_ids = [f"{s}" for s in event_ids]
                 #event_ids = f"({','.join(event_ids)})"
