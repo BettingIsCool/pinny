@@ -1,5 +1,5 @@
-import ast
 import datetime
+import pandas as pd
 import streamlit as st
 from sqlalchemy.sql import text
 from config import TABLE_LEAGUES, TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS, TABLE_OPENING, TABLE_CLOSING
@@ -63,50 +63,97 @@ def get_unique_leagues_id(sport: str, date_from: datetime, date_to: datetime, to
         return {league_id for league_id in conn.query(f"SELECT DISTINCT(league_id) FROM {TABLE_FIXTURES} WHERE sport_name = '{sport}' AND starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_name LIKE '%ITF Women%'")['league_id']}
 
 
-def get_granular_rowcount_parameterized(event_ids: str, markets: str, periods: str):
-    # Parse string inputs into lists
-    try:
-        event_ids_list = ast.literal_eval(event_ids) if event_ids else []
-        markets_list = ast.literal_eval(markets) if markets else []
-        periods_list = ast.literal_eval(periods) if periods else []
-    except (ValueError, SyntaxError):
-        event_ids_list = [int(x) for x in event_ids.split(',') if x.strip()] if event_ids else []
-        markets_list = [x.strip() for x in markets.split(',') if x.strip()] if markets else []
-        periods_list = [int(x) for x in periods.split(',') if x.strip()] if periods else []
+def get_granular_rowcount_temp_tables(event_ids: str, markets: str, periods: str):
+    # Parse input strings without ast (e.g., "1,2,3", "(1,2,3)", "[1,2,3]")
+    def parse_input(input_str: str, is_int: bool = False) -> list:
+        if not input_str:
+            return []
+        # Remove parentheses, brackets, and whitespace
+        cleaned = input_str.strip().strip('()[]').replace(' ', '')
+        # Split on commas and filter out empty values
+        values = [v.strip() for v in cleaned.split(',') if v.strip()]
+        # Convert to int if specified (for event_id, period)
+        return [int(v) if is_int else v for v in values]
 
-    # Create placeholders for IN clauses
-    event_placeholders = ','.join([f':event_id_{i}' for i in range(len(event_ids_list))])
-    market_placeholders = ','.join([f':market_{i}' for i in range(len(markets_list))])
-    period_placeholders = ','.join([f':period_{i}' for i in range(len(periods_list))])
+    # Parse inputs
+    event_ids_list = parse_input(event_ids, is_int=True)  # event_id as INT
+    markets_list = parse_input(markets, is_int=False)     # market as VARCHAR
+    periods_list = parse_input(periods, is_int=True)      # period as INT
 
-    # Handle empty lists (to avoid invalid SQL)
-    if not event_ids_list:
-        event_placeholders = 'NULL'
-    if not markets_list:
-        market_placeholders = 'NULL'
-    if not periods_list:
-        period_placeholders = 'NULL'
+    # Hardcode table name to prevent injection
+    TABLE_ODDS = 'odds'  # Replace with your actual table name
 
-    # Parameterized query
-    query = text(
-        f"SELECT COUNT(id) FROM {TABLE_ODDS} "
-        f"WHERE event_id IN ({event_placeholders}) "
-        f"AND market IN ({market_placeholders}) "
-        f"AND period IN ({period_placeholders})"
-    )
+    # Handle small IN clauses with parameterized query
+    if len(event_ids_list) <= 50 and len(markets_list) <= 50 and len(periods_list) <= 50:
+        # Create placeholders for IN clauses
+        event_placeholders = ','.join([f':e{i}' for i in range(len(event_ids_list))])
+        market_placeholders = ','.join([f':m{i}' for i in range(len(markets_list))])
+        period_placeholders = ','.join([f':p{i}' for i in range(len(periods_list))])
 
-    # Prepare parameters
-    params = {}
-    for i, eid in enumerate(event_ids_list):
-        params[f'event_id_{i}'] = eid
-    for i, m in enumerate(markets_list):
-        params[f'market_{i}'] = m
-    for i, p in enumerate(periods_list):
-        params[f'period_{i}'] = p
+        # Handle empty lists
+        if not event_ids_list:
+            event_placeholders = 'NULL'
+        if not markets_list:
+            market_placeholders = 'NULL'
+        if not periods_list:
+            period_placeholders = 'NULL'
 
-    # Execute query
-    result = conn.execute(query, params)
+        # Parameterized query
+        query = text(
+            f"SELECT COUNT(id) AS count FROM {TABLE_ODDS} "
+            f"WHERE event_id IN ({event_placeholders}) "
+            f"AND market IN ({market_placeholders}) "
+            f"AND period IN ({period_placeholders})"
+        )
 
-    # Convert to dict format
-    return result.mappings().all()  # Equivalent to pandas to_dict('records')
+        # Prepare parameters
+        params = {}
+        for i, eid in enumerate(event_ids_list):
+            params[f'e{i}'] = eid
+        for i, m in enumerate(markets_list):
+            params[f'm{i}'] = m
+        for i, p in enumerate(periods_list):
+            params[f'p{i}'] = p
 
+        # Execute with pandas (assuming conn.query is pandas.read_sql)
+        df = pd.read_sql(query, conn, params=params)
+        return df.to_dict('records')
+
+    # Handle large IN clauses with temporary tables
+    else:
+        # Create temporary tables
+        conn.execute(text("CREATE TEMPORARY TABLE temp_event_ids (event_id INT)"))
+        if event_ids_list:
+            conn.execute(
+                text("INSERT INTO temp_event_ids (event_id) VALUES (:eid)"),
+                [{'eid': eid} for eid in event_ids_list]
+            )
+        conn.execute(text("CREATE TEMPORARY TABLE temp_markets (market VARCHAR(255))"))
+        if markets_list:
+            conn.execute(
+                text("INSERT INTO temp_markets (market) VALUES (:m)"),
+                [{'m': m} for m in markets_list]
+            )
+        conn.execute(text("CREATE TEMPORARY TABLE temp_periods (period INT)"))
+        if periods_list:
+            conn.execute(
+                text("INSERT INTO temp_periods (period) VALUES (:p)"),
+                [{'p': p} for p in periods_list]
+            )
+
+        # Add indexes to temporary tables for performance
+        conn.execute(text("CREATE INDEX idx_temp_event_id ON temp_event_ids (event_id)"))
+        conn.execute(text("CREATE INDEX idx_temp_market ON temp_markets (market)"))
+        conn.execute(text("CREATE INDEX idx_temp_period ON temp_periods (period)"))
+
+        # Query with joins
+        query = text(
+            f"SELECT COUNT(o.id) AS count FROM {TABLE_ODDS} o "
+            "JOIN temp_event_ids e ON o.event_id = e.event_id "
+            "JOIN temp_markets m ON o.market = m.market "
+            "JOIN temp_periods p ON o.period = p.period"
+        )
+
+        # Execute with pandas
+        df = pd.read_sql(query, conn)
+        return df.to_dict('records')
