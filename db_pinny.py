@@ -40,6 +40,7 @@ def get_granular_fixtures_preview(date_from: datetime, date_to: datetime, league
 
 def get_granular_odds_preview(event_ids: str, markets: str, periods: str):
 
+    st.write(f"SELECT * FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods} ORDER BY id DESC LIMIT 3")
     return conn.query(f"SELECT * FROM {TABLE_ODDS} WHERE event_id IN {event_ids} AND market IN {markets} AND period IN {periods} ORDER BY id DESC LIMIT 3")
 
 
