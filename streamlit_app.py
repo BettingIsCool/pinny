@@ -136,7 +136,7 @@ if selected_leagues != '()':
                 event_ids = db.get_granular_event_ids(date_from=selected_from_date, date_to=selected_to_date, league_ids=selected_leagues)
 
                 rowcount = 0
-                for chunk in db_pinny.split_list_generator(event_ids, int(event_ids / 1000) + 1):
+                for chunk in db_pinny.split_list_generator(event_ids, int(len(event_ids) / 1000) + 1):
                     chunk = [f"{s}" for s in chunk]
                     chunk = f"({','.join(chunk)})"
                     rowcount += db.get_granular_rowcount(event_ids=chunk, markets=selected_markets, periods=selected_periods)[0]['COUNT(event_id)']
