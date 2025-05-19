@@ -10,7 +10,6 @@ import stripe_api
 import pandas as pd
 import db_pinny as db
 
-
 from config import SPORTS, PERIODS, TABLE_CLOSING, TABLE_OPENING
 
 selected_type = st.selectbox(label='Type', options=['Opening', 'Closing', 'Granular'], help='What type of data do you need? Opening...opening odds, Closing...closing odds, Granular odds...all odds (the complete odds history for each match updated roughly every 10 seconds).')
