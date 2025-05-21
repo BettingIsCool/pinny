@@ -1,4 +1,5 @@
 pandas
 stripe
 SQLAlchemy
+streamlit==1.44.0
 mysql-connector-python

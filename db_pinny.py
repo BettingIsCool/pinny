@@ -1,8 +1,6 @@
 import datetime
-import pandas as pd
 import streamlit as st
-from sqlalchemy.sql import text
-from config import TABLE_LEAGUES, TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS, TABLE_OPENING, TABLE_CLOSING
+from config import TABLE_FIXTURES, TABLE_ODDS, TABLE_RESULTS
 
 conn = st.connection('pinnacle', type='sql')
 
@@ -228,4 +226,3 @@ def get_unique_leagues_id(sport: str, date_from: datetime, date_to: datetime, to
     elif tour == 'All ITF Women Doubles':
         return {league_id for league_id in conn.query(f"SELECT DISTINCT(league_id) FROM {TABLE_FIXTURES} WHERE sport_name = '{sport}' AND starts >= '{date_from.strftime('%Y-%m-%d %H:%M:%S')}' AND starts <= '{date_to.strftime('%Y-%m-%d %H:%M:%S')}' AND league_name LIKE '%ITF Women%' AND league_name LIKE '%Doubles%'")['league_id']}
     return None
-
