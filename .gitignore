@@ -14,3 +14,6 @@
 /_update_closing_data (local).py
 /_update_opening_data (local).py
 /+run_granular_query.py
+/fixtures.csv
+/odds.csv
+/results.csv
